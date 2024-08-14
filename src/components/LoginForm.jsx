@@ -23,6 +23,8 @@ export const LoginForm = (props) => {
                 if (isLoginForm) {
                     if (!props.onLogin([name, pass])) {
                         setIsError(true)
+                        setName("")
+                        setPass("")
                     }
                 }else{
                     if (pass === repeatedPass && pass !== "" && name !== ""){
@@ -52,18 +54,18 @@ export const LoginForm = (props) => {
 
                 <div>
                     Login: 
-                    <input type="text" name="login" defaultValue="" onChange={(e) => {setName(e.target.value)}}></input>
+                    <input type="text" name="login" defaultValue="" value={name} onChange={(e) => {setName(e.target.value)}}></input>
                 </div>
 
                 <div>
                     Password:
-                    <input type="password" name="pass" defaultValue="" onChange={(e) => {setPass(e.target.value)}}></input>
+                    <input type="password" name="pass" defaultValue="" value={pass} onChange={(e) => {setPass(e.target.value)}}></input>
                 </div>
 
                 {isLoginForm ? "" :  
                 <div>
                     Repeat Pass: 
-                    <input type="password" name="repeatedPass" onChange={(e) => {setRepeatedPass(e.target.value)}} defaultValue={repeatedPass}></input>
+                    <input type="password" name="repeatedPass" value={repeatedPass} onChange={(e) => {setRepeatedPass(e.target.value)}} defaultValue={repeatedPass}></input>
                 </div>}
 
                 {isError ? "There is an error in the form" : ""}
