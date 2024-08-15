@@ -1,6 +1,5 @@
 import { PersonInfo } from "./PersonInfo"
 import "./Page.css"
-import { useState } from "react"
 
 export const Page = (props) => {
 
