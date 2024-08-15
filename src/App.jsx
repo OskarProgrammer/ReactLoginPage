@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { LoginForm } from './components/LoginForm'
-import {Page} from "./components/Page"
+import { Page } from "./components/Page"
+import { RegForm } from './components/RegForm'
 
 const initialPeople = [
   {
@@ -26,26 +27,22 @@ const initialPeople = [
 function App() {
   const [people, setPeople] = useState(initialPeople)
   const [isLogged, setIsLogged] = useState(false)
-  const [user, setUser] = useState("")
-  const [isAdmin, setIsAdmin] = useState(false)
-  const [isFaulty, setIsFaulty] = useState(false)
-  const [key, setKey] = useState("")
+  const [isLoginForm, setIsLoginForm] = useState(true)
+  const [dataUser, setDataUser] = useState({login: "", pass: "", isAdmin: false, key: ""})
 
   const addPerson = (data) => {
-    setIsFaulty(false)
-    const newPeople = [...people, data]
+    const newData = {...data, key: crypto.randomUUID()}
+    const newPeople = [...people, newData]
     setPeople(newPeople)
-
+    console.log(people)
   }
 
   const checkPerson = ([name, pass]) => {
-
+      console.log(name, pass)
       for (let i = 0 ; i < people.length; i++){
           if (name == people[i].login && pass == people[i].pass){
             setIsLogged(true)
-            setUser(name)
-            setKey(people[i].key)
-            setIsAdmin(people[i].isAdmin)
+            setDataUser({login: people[i].login, pass: people[i].pass, isAdmin: people[i].isAdmin, key: people[i].key})
             return true
           } 
       }
@@ -58,17 +55,24 @@ function App() {
 
   const deletePerson = (key) => {
       let newPeople = []
+
       for (let i = 0; i < people.length; i++){
           if (people[i].key !== key){
             newPeople.push(people[i])
           }
       }
+
       setPeople(newPeople)
+  }
+
+  const changeForm = () => {
+      setIsLoginForm(!isLoginForm)
   }
 
   return (
     <>
-      {isLogged ? <Page onDelete={deletePerson} onLogOut={logOut} login={user} keyItem={key} isAdmin={isAdmin} people={isAdmin ? people : ""}/> : <LoginForm onRegister={addPerson} onLogin={checkPerson}/>}
+      {isLogged ? <Page data={dataUser} people={dataUser.isAdmin ? people : ""} onDelete={deletePerson} onLogOut={logOut} /> :
+        (isLoginForm ? <LoginForm onLogin={checkPerson} onRegForm={changeForm} /> : <RegForm onCreateAccount={addPerson} onLoginForm={changeForm} />)}
     </>
   )
 }

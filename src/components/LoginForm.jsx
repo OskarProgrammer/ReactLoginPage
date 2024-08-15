@@ -1,82 +1,40 @@
 import { useState } from "react"
-
+import "./LoginForm.css"
 
 
 export const LoginForm = (props) => {
-    const [name, setName] = useState("")
+    const [login, setLogin] = useState("")
     const [pass, setPass] = useState("")
-    const [repeatedPass, setRepeatedPass] = useState("")
-    const [isLoginForm, setIsLoginForm] = useState(true)
     const [isError, setIsError] = useState(false)
-    const [isAdded, setIsAdded] = useState(false)
+    
+
+    const changeForm = () => {
+        props.onRegForm()
+    }
+
+    const sendData = () => {
+        if (!props.onLogin([login,pass])) {
+            setIsError(true)
+        }
+    }
 
     return (
-        <>
-            <form onChange={() => {
-                setIsError(false)
-                setIsAdded(false)
-            }} 
-            onSubmit={(e) => {
-                e.preventDefault()
-                setIsAdded(false)
-
-                if (isLoginForm) {
-                    if (!props.onLogin([name, pass])) {
-                        setIsError(true)
-                        setName("")
-                        setPass("")
-                    }
-                }else{
-                    if (pass === repeatedPass && pass !== "" && name !== ""){
-                        props.onRegister({
-                            login: name,
-                            pass: pass,
-                            isAdmin: false,
-                            key: crypto.randomUUID()
-                        })
-                        setName("")
-                        setPass("")
-                        setRepeatedPass("")
-                        setIsLoginForm(true)
-                        setIsAdded(true)
-                    }else {
-                        setName("")
-                        setPass("")
-                        setRepeatedPass("")
-                        setIsLoginForm(true)
-                        setIsError(true)
-                    }
-                }   
-
-                }}>
-
-                {isLoginForm ? "Login Form" : "Register Form"}
-
+        <div>
+            <form onChange={() => {setIsError(false)}} onSubmit={(e)=>{e.preventDefault(); sendData()}}>
                 <div>
-                    Login: 
-                    <input type="text" name="login" defaultValue="" value={name} onChange={(e) => {setName(e.target.value)}}></input>
+                    <input type="text" name="login" value={login} placeholder="login" onChange={(e) => {setLogin(e.target.value)}}/>
                 </div>
 
                 <div>
-                    Password:
-                    <input type="password" name="pass" defaultValue="" value={pass} onChange={(e) => {setPass(e.target.value)}}></input>
+                    <input type="password" name="pass" value={pass} placeholder="password" onChange={(e) => {setPass(e.target.value)}}/>
                 </div>
 
-                {isLoginForm ? "" :  
                 <div>
-                    Repeat Pass: 
-                    <input type="password" name="repeatedPass" value={repeatedPass} onChange={(e) => {setRepeatedPass(e.target.value)}} defaultValue={repeatedPass}></input>
-                </div>}
-
-                {isError ? "There is an error in the form" : ""}
-                {isAdded ? "User added" : ""}
-
-                <div>
-                    <button type="submit">Submit</button>
-                    <button type="button" onClick={()=>{setIsLoginForm(!isLoginForm)}}>{isLoginForm ? "I havent got account" : "I have account"}</button>
+                    <button type="submit">Login</button>
+                    <button type="button" onClick={changeForm}> I havent got account yet </button>
                 </div>
-
+                {isError ? <h3>There was an error in form </h3> : ""}
             </form>
-        </>
+        </div>
     )
 }

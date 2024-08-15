@@ -1,4 +1,4 @@
-import "./PersonInfo.css"
+
 
 export const PersonInfo = (props) => {
     return (

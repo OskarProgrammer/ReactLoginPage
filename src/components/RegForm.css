@@ -1,0 +1,34 @@
+body {
+    background-color: rgb(101, 92, 108);
+}
+
+div {
+    position: relative;
+}
+
+form {
+    position: inherit;
+    background-color: rgb(144, 130, 157);
+    padding: 25px;
+    width: 30%;
+    height: 25%;
+
+    border-radius: 25px;
+    text-align: center;
+    margin: auto;
+}
+
+form > div {
+    margin: 25px;
+}
+
+form > div > button {
+    padding: 25px;
+    margin: 5px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 25px;
+}
+
+form > div > button:hover {
+    background-color : rgb(115, 115, 115);
+}
